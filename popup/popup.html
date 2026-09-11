@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Captio</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="panel">
+      <header class="panel__header">
+        <img class="panel__logo" src="../public/Captio.jpeg" alt="" width="48" height="48">
+        <div>
+          <h1 class="panel__title">Captio</h1>
+          <p class="panel__tagline">Capture d'écran</p>
+        </div>
+      </header>
+
+      <section class="panel__status">
+        <h2 class="visually-hidden">État de l'extension</h2>
+        <p class="panel__badge">✓ Extension installée</p>
+        <p>
+          Captio est accessible depuis le navigateur. La fonctionnalité de
+          capture d'écran arrive bientôt.
+        </p>
+      </section>
+
+      <footer class="panel__footer">
+        <span>Version <span id="extension-version">…</span></span>
+      </footer>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

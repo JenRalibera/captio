@@ -1,0 +1,109 @@
+/* Design tokens */
+:root {
+  --color-primary: #2f6fed;
+  --color-primary-soft: #e8effd;
+  --color-text: #1f2733;
+  --color-text-muted: #525e6d;
+  --color-bg: #ffffff;
+  --color-focus: #2f6fed;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  --radius-md: 12px;
+
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 18px;
+  --font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+
+  --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-focus);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 4px;
+}
+
+.panel {
+  width: 320px;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.panel__logo {
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.panel__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  line-height: 1.25;
+}
+
+.panel__tagline {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.panel__status {
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  line-height: 1.5;
+}
+
+.panel__badge {
+  margin: 0 0 var(--space-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.panel__status p:last-child {
+  margin: 0;
+}
+
+.panel__footer {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  border-top: 1px solid #e3e8ef;
+  padding-top: var(--space-sm);
+}
+
+/* Visually hidden, still available to assistive tech */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  white-space: nowrap;
+}
