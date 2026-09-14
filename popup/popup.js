@@ -1,10 +1,12 @@
 // Point d'entrée de la popup : coordonne l'état persisté (extension-state),
 // le rendu de l'interface (status-panel), le déclenchement de la capture de
-// l'onglet actif (capture) et l'affichage de la capture réalisée
-// (screenshot-display).
+// l'onglet actif (capture), l'affichage de la capture réalisée
+// (screenshot-display) et son enregistrement sur l'ordinateur
+// (save-screenshot).
 //
-// Périmètre : la capture est réalisée puis affichée dans l'extension ; elle
-// n'est ni enregistrée, ni téléchargée.
+// Périmètre : la capture est réalisée puis affichée dans l'extension, puis
+// peut être enregistrée localement sur l'ordinateur de l'utilisateur. La
+// capture n'est jamais transmise hors de l'appareil.
 
 import {
   loadActiveState,
@@ -27,10 +29,22 @@ import {
   setCapturePending,
 } from "./status-panel.js";
 import {
+  bindSaveButton,
+  focusSaveButton,
+  renderSaveError,
+  renderSavePending,
+  renderSaveSuccess,
   renderScreenshotEmpty,
   renderScreenshotError,
+  setSavePending,
   showScreenshot,
 } from "./screenshot-display.js";
+import { saveScreenshot } from "./save-screenshot.js";
+
+// Données de la capture actuellement affichée : c'est exactement ce contenu
+// (et lui seul) qui peut être enregistré, afin que le fichier produit
+// corresponde à l'image consultée.
+let displayedScreenshotDataUrl = null;
 
 async function activateExtension() {
   setActivationPending(true);
@@ -52,13 +66,16 @@ async function performCapture() {
   renderCapturePending();
   try {
     const dataUrl = await captureActiveTab();
+    displayedScreenshotDataUrl = dataUrl;
     renderCaptureSuccess();
     try {
       await showScreenshot(dataUrl);
+      focusSaveButton();
     } catch (error) {
       // La capture a réussi mais son affichage a échoué : on présente un
       // message compréhensible sans laisser la capture sembler inexistante.
       console.error("[Captio] Impossible d'afficher la capture :", error);
+      displayedScreenshotDataUrl = null;
       renderScreenshotError();
     }
   } catch (error) {
@@ -67,6 +84,28 @@ async function performCapture() {
     renderCaptureError(error.message);
   } finally {
     setCapturePending(false);
+  }
+}
+
+async function performSave() {
+  // L'enregistrement n'est proposé que lorsqu'une capture est affichée : on
+  // ne peut pas enregistrer une capture inexistante.
+  if (displayedScreenshotDataUrl === null) {
+    return;
+  }
+
+  setSavePending(true);
+  renderSavePending();
+  try {
+    const { filename } = await saveScreenshot(displayedScreenshotDataUrl);
+    renderSaveSuccess(filename);
+  } catch (error) {
+    // L'erreur technique détaillée est journalisée par save-screenshot.js ;
+    // seul le message compréhensible est remonté à l'utilisateur.
+    console.error("[Captio] Échec de l'enregistrement de la capture :", error);
+    renderSaveError(error.message);
+  } finally {
+    setSavePending(false);
   }
 }
 
@@ -89,6 +128,7 @@ async function initialize() {
 
 bindActivateButton(activateExtension);
 bindCaptureButton(performCapture);
+bindSaveButton(performSave);
 
 initialize();
 

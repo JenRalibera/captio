@@ -244,8 +244,32 @@ body {
 .panel__screenshot[hidden],
 .panel__screenshot-frame[hidden],
 .panel__screenshot-empty[hidden],
-.panel__screenshot-error[hidden] {
+.panel__screenshot-error[hidden],
+.panel__screenshot-actions[hidden] {
   display: none;
+}
+
+/* Zone d'action sous la capture : bouton « Enregistrer » et retour visuel
+   de l'enregistrement. */
+.panel__screenshot-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.panel__save-feedback {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.panel__save-feedback--success {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.panel__save-feedback--error {
+  color: var(--color-danger);
 }
 
 /* Visually hidden, still available to assistive tech */

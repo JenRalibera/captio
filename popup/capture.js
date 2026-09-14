@@ -6,9 +6,9 @@
 // partie actuellement visible de l'onglet actif de la fenêtre de la popup.
 // Le contenu accessible uniquement après défilement n'est pas inclus.
 //
-// Périmètre de la fonctionnalité : la capture renvoyée est affichée par la
-// popup juste après sa réalisation ; elle n'est ni enregistrée, ni
-// téléchargée par l'extension.
+// Périmètre de ce module : la capture renvoyée est affichée par la popup
+// juste après sa réalisation. L'enregistrement de la capture sur l'ordinateur
+// est une opération distincte, gérée par save-screenshot.js.
 
 const CAPTURE_OPTIONS = { format: "png" };
 

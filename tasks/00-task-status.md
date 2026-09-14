@@ -6,3 +6,4 @@
 | 2 | Activer l'extension | ✅ Terminé |
 | 3 | Déclencher la capture | ✅ Terminé |
 | 4 | Afficher la capture | ✅ Terminé |
+| 5 | Enregistrer la capture | ✅ Terminé |
