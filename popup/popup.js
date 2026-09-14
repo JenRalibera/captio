@@ -1,9 +1,10 @@
 // Point d'entrée de la popup : coordonne l'état persisté (extension-state),
-// le rendu de l'interface (status-panel) et le déclenchement de la capture
-// de l'onglet actif (capture).
+// le rendu de l'interface (status-panel), le déclenchement de la capture de
+// l'onglet actif (capture) et l'affichage de la capture réalisée
+// (screenshot-display).
 //
-// Périmètre : la capture est déclenchée mais n'est ni affichée, ni
-// enregistrée par l'extension.
+// Périmètre : la capture est réalisée puis affichée dans l'extension ; elle
+// n'est ni enregistrée, ni téléchargée.
 
 import {
   loadActiveState,
@@ -25,12 +26,18 @@ import {
   setActivationPending,
   setCapturePending,
 } from "./status-panel.js";
+import {
+  renderScreenshotEmpty,
+  renderScreenshotError,
+  showScreenshot,
+} from "./screenshot-display.js";
 
 async function activateExtension() {
   setActivationPending(true);
   try {
     await saveActiveState();
     renderActive();
+    renderScreenshotEmpty();
     focusCaptureHeading();
   } catch (error) {
     console.error("[Captio] Impossible d'enregistrer l'activation :", error);
@@ -44,10 +51,16 @@ async function performCapture() {
   // ce périmètre garantit que la capture n'est déclenchée que dans cet état.
   renderCapturePending();
   try {
-    await captureActiveTab();
-    // La donnée de capture est volontairement ignorée : la fonctionnalité
-    // n'affiche ni n'enregistre la capture (voir le fichier de tâches).
+    const dataUrl = await captureActiveTab();
     renderCaptureSuccess();
+    try {
+      await showScreenshot(dataUrl);
+    } catch (error) {
+      // La capture a réussi mais son affichage a échoué : on présente un
+      // message compréhensible sans laisser la capture sembler inexistante.
+      console.error("[Captio] Impossible d'afficher la capture :", error);
+      renderScreenshotError();
+    }
   } catch (error) {
     // L'erreur technique détaillée est déjà journalisée par capture.js ;
     // seul le message compréhensible est remonté à l'utilisateur.
@@ -64,6 +77,7 @@ async function initialize() {
     const isActive = await loadActiveState();
     if (isActive) {
       renderActive();
+      renderScreenshotEmpty();
     } else {
       renderInactive();
     }

@@ -6,8 +6,9 @@
 // partie actuellement visible de l'onglet actif de la fenêtre de la popup.
 // Le contenu accessible uniquement après défilement n'est pas inclus.
 //
-// Périmètre de la fonctionnalité : la capture n'est ni affichée, ni
-// enregistrée par l'extension. La donnée renvoyée est aussitôt abandonnée.
+// Périmètre de la fonctionnalité : la capture renvoyée est affichée par la
+// popup juste après sa réalisation ; elle n'est ni enregistrée, ni
+// téléchargée par l'extension.
 
 const CAPTURE_OPTIONS = { format: "png" };
 
