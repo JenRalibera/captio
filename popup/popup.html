@@ -16,12 +16,35 @@
         </div>
       </header>
 
-      <section class="panel__status">
+      <section class="panel__status" id="status-section" aria-live="polite">
         <h2 class="visually-hidden">État de l'extension</h2>
-        <p class="panel__badge">✓ Extension installée</p>
-        <p>
-          Captio est accessible depuis le navigateur. La fonctionnalité de
-          capture d'écran arrive bientôt.
+        <p class="panel__badge" id="status-badge">…</p>
+        <p id="status-detail">…</p>
+      </section>
+
+      <section class="panel__actions" id="activation-panel" hidden>
+        <h2 class="visually-hidden">Activation de l'extension</h2>
+        <button type="button" id="activate-button" class="panel__button panel__button--primary">
+          Activer l'extension
+        </button>
+      </section>
+
+      <section class="panel__actions" id="capture-panel" hidden>
+        <h2 class="panel__capture-heading" id="capture-heading" tabindex="-1">
+          Fonctionnalité de capture
+        </h2>
+        <button
+          type="button"
+          id="capture-button"
+          class="panel__button"
+          disabled
+          aria-describedby="capture-note"
+        >
+          Capture d'écran
+        </button>
+        <p id="capture-note">
+          La fonctionnalité de capture arrive bientôt. L'extension reste active :
+          aucune réactivation n'est nécessaire avant chaque capture.
         </p>
       </section>
 
