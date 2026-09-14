@@ -45,7 +45,7 @@
         <p id="capture-note">
           Le bouton capture la partie visible de l'onglet actif. Une fois
           réalisée, la capture est affichée ci-dessous pour vérification ;
-          elle n'est ni enregistrée, ni téléchargée.
+          vous pouvez ensuite l'enregistrer sur votre ordinateur.
         </p>
         <p id="capture-feedback" class="panel__capture-feedback" aria-live="polite"></p>
 
@@ -66,6 +66,22 @@
               alt="Aperçu de la capture d'écran réalisée"
             >
           </div>
+
+          <div class="panel__screenshot-actions" id="save-actions" hidden>
+            <button
+              type="button"
+              id="save-button"
+              class="panel__button panel__button--primary"
+            >
+              Enregistrer
+            </button>
+            <p
+              class="panel__save-feedback"
+              id="save-feedback"
+              aria-live="polite"
+            ></p>
+          </div>
+
           <p class="panel__screenshot-error" id="screenshot-error" hidden>
             La capture a été réalisée, mais l'extension n'a pas réussi à
             l'afficher. Réessayez une capture.

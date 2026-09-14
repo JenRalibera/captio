@@ -3,7 +3,7 @@
   "name": "Captio",
   "version": "0.1.0",
   "description": "Extension de capture d'écran pour le navigateur. Interface accessible depuis l'icône de la barre d'outils.",
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage", "activeTab", "downloads"],
   "icons": {
     "16": "public/Captio.jpeg",
     "32": "public/Captio.jpeg",

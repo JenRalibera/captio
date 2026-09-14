@@ -14,6 +14,18 @@ I try to create random browser extensions, so if you want to add something, send
 
 L'icône **Captio** apparaît alors dans la barre d'outils ; un clic dessus ouvre l'interface de l'extension.
 
+### Navigateur Firefox
+
+L'extension se charge également dans Firefox : ouvrir
+`about:debugging#/runtime/this-firefox`, cliquer sur **Charger un module
+temporaire…** et sélectionner le `manifest.json` du projet.
+
+## Fonctionnalité
+
+1. Activer l'extension (la première fois).
+2. Cliquer sur **Capture d'écran** : la partie visible de l'onglet actif est capturée puis affichée dans l'extension.
+3. Cliquer sur **Enregistrer** : la capture affichée est enregistrée dans le dossier de téléchargement du navigateur sous le nom `captio-xxxxxx.png` (le suffixe est l'heure de l'enregistrement ; un nom déjà utilisé n'est jamais écrasé).
+
 ## Structure
 
 - `manifest.json` — manifeste Manifest V3 de l'extension
@@ -27,3 +39,7 @@ L'icône **Captio** apparaît alors dans la barre d'outils ; un clic dessus ouvr
   barre d'outils), sans accès permanent aux sites visités.
 - `storage` — mémorise l'état actif de l'extension (activation de la capture)
   afin que l'utilisateur n'ait pas à la réactiver avant chaque capture.
+- `downloads` — permet d'enregistrer la capture affichée dans le dossier de
+  téléchargement du navigateur via `chrome.downloads` (Chrome) ou
+  `browser.downloads` (Firefox), et de suivre la fin du téléchargement pour
+  informer l'utilisateur du succès ou de l'échec.
