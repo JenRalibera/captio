@@ -19,3 +19,8 @@ L'icône **Captio** apparaît alors dans la barre d'outils ; un clic dessus ouvr
 - `manifest.json` — manifeste Manifest V3 de l'extension
 - `popup/` — interface de l'extension (popup de la barre d'outils)
 - `public/` — ressources publiques (icône de l'extension)
+
+## Permissions
+
+- `storage` — mémorise l'état actif de l'extension (activation de la capture)
+  afin que l'utilisateur n'ait pas à la réactiver avant chaque capture.
