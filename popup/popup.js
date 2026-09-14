@@ -1,22 +1,29 @@
-// Point d'entrée de la popup : coordonne l'état persisté (extension-state)
-// et le rendu de l'interface (status-panel).
+// Point d'entrée de la popup : coordonne l'état persisté (extension-state),
+// le rendu de l'interface (status-panel) et le déclenchement de la capture
+// de l'onglet actif (capture).
 //
-// La réalisation et l'affichage de la capture ne font pas partie de ce
-// périmètre : seule la mise à disposition de son accès est traitée ici.
+// Périmètre : la capture est déclenchée mais n'est ni affichée, ni
+// enregistrée par l'extension.
 
 import {
   loadActiveState,
   saveActiveState,
 } from "./extension-state.js";
+import { captureActiveTab } from "./capture.js";
 import {
   bindActivateButton,
+  bindCaptureButton,
   displayExtensionVersion,
   focusCaptureHeading,
   renderActive,
+  renderCaptureError,
+  renderCapturePending,
+  renderCaptureSuccess,
   renderInactive,
   renderReadError,
   renderWriteError,
   setActivationPending,
+  setCapturePending,
 } from "./status-panel.js";
 
 async function activateExtension() {
@@ -29,6 +36,24 @@ async function activateExtension() {
     console.error("[Captio] Impossible d'enregistrer l'activation :", error);
     renderWriteError();
     setActivationPending(false);
+  }
+}
+
+async function performCapture() {
+  // Le bouton de capture n'est visible que lorsque l'extension est active :
+  // ce périmètre garantit que la capture n'est déclenchée que dans cet état.
+  renderCapturePending();
+  try {
+    await captureActiveTab();
+    // La donnée de capture est volontairement ignorée : la fonctionnalité
+    // n'affiche ni n'enregistre la capture (voir le fichier de tâches).
+    renderCaptureSuccess();
+  } catch (error) {
+    // L'erreur technique détaillée est déjà journalisée par capture.js ;
+    // seul le message compréhensible est remonté à l'utilisateur.
+    renderCaptureError(error.message);
+  } finally {
+    setCapturePending(false);
   }
 }
 
@@ -49,6 +74,7 @@ async function initialize() {
 }
 
 bindActivateButton(activateExtension);
+bindCaptureButton(performCapture);
 
 initialize();
 
