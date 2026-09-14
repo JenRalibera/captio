@@ -43,10 +43,34 @@
           Capture d'écran
         </button>
         <p id="capture-note">
-          Le bouton capture la partie visible de l'onglet actif. La capture
-          n'est ni affichée, ni enregistrée sur votre poste.
+          Le bouton capture la partie visible de l'onglet actif. Une fois
+          réalisée, la capture est affichée ci-dessous pour vérification ;
+          elle n'est ni enregistrée, ni téléchargée.
         </p>
         <p id="capture-feedback" class="panel__capture-feedback" aria-live="polite"></p>
+
+        <div class="panel__screenshot" id="screenshot-display" aria-live="polite">
+          <h3 class="panel__screenshot-heading">Aperçu de la capture</h3>
+          <p class="panel__screenshot-empty" id="screenshot-empty">
+            Aucune capture à afficher pour le moment. Réalisez une capture
+            d'écran pour la visualiser ici.
+          </p>
+          <div
+            class="panel__screenshot-frame"
+            id="screenshot-image-wrapper"
+            hidden
+          >
+            <img
+              class="panel__screenshot-image"
+              id="screenshot-image"
+              alt="Aperçu de la capture d'écran réalisée"
+            >
+          </div>
+          <p class="panel__screenshot-error" id="screenshot-error" hidden>
+            La capture a été réalisée, mais l'extension n'a pas réussi à
+            l'afficher. Réessayez une capture.
+          </p>
+        </div>
       </section>
 
       <footer class="panel__footer">

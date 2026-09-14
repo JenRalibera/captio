@@ -197,6 +197,57 @@ body {
   color: var(--color-danger);
 }
 
+/* Espace d'affichage de la capture réalisée. Les états (vide, image,
+   erreur) sont présentés un à un : l'image peut défiler verticalement dans
+   son cadre afin que l'intégralité de la zone capturée reste consultable
+   sans jamais être tronquée. */
+.panel__screenshot {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-sm);
+}
+
+.panel__screenshot-heading {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+}
+
+.panel__screenshot-empty,
+.panel__screenshot-error {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.panel__screenshot-error {
+  color: var(--color-danger);
+}
+
+.panel__screenshot-frame {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-neutral-soft);
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.panel__screenshot-frame img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Le `hidden` ne prime pas sur un `display` posé par une règle précédente :
+   on rétablit explicitement l'affichage `none`. */
+.panel__screenshot[hidden],
+.panel__screenshot-frame[hidden],
+.panel__screenshot-empty[hidden],
+.panel__screenshot-error[hidden] {
+  display: none;
+}
+
 /* Visually hidden, still available to assistive tech */
 .visually-hidden {
   position: absolute;
