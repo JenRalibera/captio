@@ -9,12 +9,17 @@ const ACTIVATION_PANEL_ID = "activation-panel";
 const ACTIVATE_BUTTON_ID = "activate-button";
 const CAPTURE_PANEL_ID = "capture-panel";
 const CAPTURE_HEADING_ID = "capture-heading";
+const CAPTURE_BUTTON_ID = "capture-button";
+const CAPTURE_FEEDBACK_ID = "capture-feedback";
 const VERSION_ID = "extension-version";
 
 const STATUS_INACTIVE = "panel__status--inactive";
 const STATUS_ACTIVE = "panel__status--active";
 const STATUS_ERROR = "panel__status--error";
 const STATUS_MODIFIERS = [STATUS_INACTIVE, STATUS_ACTIVE, STATUS_ERROR];
+
+const CAPTURE_FEEDBACK_ERROR = "panel__capture-feedback--error";
+const CAPTURE_FEEDBACK_SUCCESS = "panel__capture-feedback--success";
 
 const MESSAGES = {
   inactiveBadge: "Extension inactive",
@@ -28,6 +33,8 @@ const MESSAGES = {
   writeErrorBadge: "Activation impossible",
   writeErrorDetail:
     "L'état n'a pas pu être enregistré. Vérifiez que la permission « storage » est accordée, puis réessayez.",
+  capturePending: "Capture en cours…",
+  captureSuccess: "✓ Capture réalisée.",
 };
 
 function getElement(id) {
@@ -45,6 +52,8 @@ const activationPanel = getElement(ACTIVATION_PANEL_ID);
 const activateButton = getElement(ACTIVATE_BUTTON_ID);
 const capturePanel = getElement(CAPTURE_PANEL_ID);
 const captureHeading = getElement(CAPTURE_HEADING_ID);
+const captureButton = getElement(CAPTURE_BUTTON_ID);
+const captureFeedback = getElement(CAPTURE_FEEDBACK_ID);
 
 function setStatus(modifier, badgeText, detailText) {
   statusSection.classList.remove(...STATUS_MODIFIERS);
@@ -63,6 +72,13 @@ export function renderActive() {
   setStatus(STATUS_ACTIVE, MESSAGES.activeBadge, MESSAGES.activeDetail);
   activationPanel.hidden = true;
   capturePanel.hidden = false;
+  captureButton.disabled = false;
+  resetCaptureFeedback();
+}
+
+function resetCaptureFeedback() {
+  captureFeedback.classList.remove(CAPTURE_FEEDBACK_ERROR, CAPTURE_FEEDBACK_SUCCESS);
+  captureFeedback.textContent = "";
 }
 
 export function renderReadError() {
@@ -87,6 +103,32 @@ export function focusCaptureHeading() {
 
 export function bindActivateButton(handler) {
   activateButton.addEventListener("click", handler);
+}
+
+export function setCapturePending(isPending) {
+  captureButton.disabled = isPending;
+}
+
+export function renderCapturePending() {
+  captureButton.disabled = true;
+  captureFeedback.classList.remove(CAPTURE_FEEDBACK_ERROR, CAPTURE_FEEDBACK_SUCCESS);
+  captureFeedback.textContent = MESSAGES.capturePending;
+}
+
+export function renderCaptureSuccess() {
+  captureFeedback.classList.remove(CAPTURE_FEEDBACK_ERROR);
+  captureFeedback.classList.add(CAPTURE_FEEDBACK_SUCCESS);
+  captureFeedback.textContent = MESSAGES.captureSuccess;
+}
+
+export function renderCaptureError(detail) {
+  captureFeedback.classList.remove(CAPTURE_FEEDBACK_SUCCESS);
+  captureFeedback.classList.add(CAPTURE_FEEDBACK_ERROR);
+  captureFeedback.textContent = detail;
+}
+
+export function bindCaptureButton(handler) {
+  captureButton.addEventListener("click", handler);
 }
 
 export function displayExtensionVersion() {

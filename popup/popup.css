@@ -182,6 +182,21 @@ body {
   padding-top: var(--space-sm);
 }
 
+.panel__capture-feedback {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.panel__capture-feedback--success {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.panel__capture-feedback--error {
+  color: var(--color-danger);
+}
+
 /* Visually hidden, still available to assistive tech */
 .visually-hidden {
   position: absolute;

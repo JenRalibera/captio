@@ -22,5 +22,8 @@ L'icône **Captio** apparaît alors dans la barre d'outils ; un clic dessus ouvr
 
 ## Permissions
 
+- `activeTab` — autorise la capture de la partie visible de l'onglet actif,
+  uniquement lorsque l'utilisateur ouvre l'extension (clic sur l'icône de la
+  barre d'outils), sans accès permanent aux sites visités.
 - `storage` — mémorise l'état actif de l'extension (activation de la capture)
   afin que l'utilisateur n'ait pas à la réactiver avant chaque capture.
