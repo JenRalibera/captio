@@ -2,23 +2,29 @@
 //
 // Cet espace présente la capture réalisée, ou un état approprié lorsqu'aucune
 // capture n'est disponible ou qu'elle ne peut pas être affichée. Il héberge
-// également l'action « Enregistrer » et ses retours visuels : l'enregistrement
-// n'est proposé que lorsqu'une capture est effectivement affichée. Toute
-// manipulation du DOM de la popup liée à l'affichage de la capture et à son
-// enregistrement passe par ce module.
+// également les actions « Copier » et « Enregistrer » et leurs retours
+// visuels : ces actions ne sont proposées que lorsqu'une capture est
+// effectivement affichée. Toute manipulation du DOM de la popup liée à
+// l'affichage de la capture, à sa copie et à son enregistrement passe par ce
+// module.
 
 const SCREENSHOT_IMAGE_WRAPPER_ID = "screenshot-image-wrapper";
 const SCREENSHOT_IMAGE_ID = "screenshot-image";
 const SCREENSHOT_EMPTY_ID = "screenshot-empty";
 const SCREENSHOT_ERROR_ID = "screenshot-error";
-const SAVE_ACTIONS_ID = "save-actions";
+const SCREENSHOT_ACTIONS_ID = "screenshot-actions";
+const COPY_BUTTON_ID = "copy-button";
+const COPY_FEEDBACK_ID = "copy-feedback";
 const SAVE_BUTTON_ID = "save-button";
 const SAVE_FEEDBACK_ID = "save-feedback";
 
+const COPY_FEEDBACK_SUCCESS = "panel__copy-feedback--success";
+const COPY_FEEDBACK_ERROR = "panel__copy-feedback--error";
 const SAVE_FEEDBACK_SUCCESS = "panel__save-feedback--success";
 const SAVE_FEEDBACK_ERROR = "panel__save-feedback--error";
 
 const MESSAGES = {
+  copyPending: "Copie en cours…",
   savePending: "Enregistrement en cours…",
 };
 
@@ -34,7 +40,9 @@ const screenshotImageWrapper = getElement(SCREENSHOT_IMAGE_WRAPPER_ID);
 const screenshotImage = getElement(SCREENSHOT_IMAGE_ID);
 const screenshotEmpty = getElement(SCREENSHOT_EMPTY_ID);
 const screenshotError = getElement(SCREENSHOT_ERROR_ID);
-const saveActions = getElement(SAVE_ACTIONS_ID);
+const screenshotActions = getElement(SCREENSHOT_ACTIONS_ID);
+const copyButton = getElement(COPY_BUTTON_ID);
+const copyFeedback = getElement(COPY_FEEDBACK_ID);
 const saveButton = getElement(SAVE_BUTTON_ID);
 const saveFeedback = getElement(SAVE_FEEDBACK_ID);
 
@@ -55,7 +63,7 @@ function resetScreenshotImage() {
 export function renderScreenshotEmpty() {
   resetScreenshotImage();
   displayOnly(screenshotEmpty);
-  hideSaveActions();
+  hideScreenshotActions();
 }
 
 export async function showScreenshot(dataUrl) {
@@ -73,14 +81,48 @@ export async function showScreenshot(dataUrl) {
   }
 
   displayOnly(screenshotImageWrapper);
+  resetCopyFeedback();
   resetSaveFeedback();
-  saveActions.hidden = false;
+  screenshotActions.hidden = false;
 }
 
 export function renderScreenshotError() {
   resetScreenshotImage();
   displayOnly(screenshotError);
-  hideSaveActions();
+  hideScreenshotActions();
+}
+
+export function bindCopyButton(handler) {
+  copyButton.addEventListener("click", handler);
+}
+
+export function setCopyPending(isPending) {
+  copyButton.disabled = isPending;
+}
+
+// Réinitialise le retour visuel de la copie sans toucher à l'état du bouton :
+// utilisé dès qu'une nouvelle capture est affichée ou que l'espace
+// d'affichage change d'état.
+function resetCopyFeedback() {
+  copyFeedback.classList.remove(COPY_FEEDBACK_SUCCESS, COPY_FEEDBACK_ERROR);
+  copyFeedback.textContent = "";
+}
+
+export function renderCopyPending() {
+  resetCopyFeedback();
+  copyFeedback.textContent = MESSAGES.copyPending;
+}
+
+export function renderCopySuccess() {
+  copyFeedback.classList.remove(COPY_FEEDBACK_ERROR);
+  copyFeedback.classList.add(COPY_FEEDBACK_SUCCESS);
+  copyFeedback.textContent = "✓ Capture copiée dans le presse-papiers.";
+}
+
+export function renderCopyError(detail) {
+  copyFeedback.classList.remove(COPY_FEEDBACK_SUCCESS);
+  copyFeedback.classList.add(COPY_FEEDBACK_ERROR);
+  copyFeedback.textContent = detail;
 }
 
 export function bindSaveButton(handler) {
@@ -103,8 +145,9 @@ function resetSaveFeedback() {
   saveFeedback.textContent = "";
 }
 
-function hideSaveActions() {
-  saveActions.hidden = true;
+function hideScreenshotActions() {
+  screenshotActions.hidden = true;
+  resetCopyFeedback();
   resetSaveFeedback();
 }
 

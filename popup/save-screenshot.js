@@ -21,7 +21,8 @@
 // l'interface (bouton « Enregistrer », retours visuels) appartient à
 // screenshot-display.js.
 
-const PNG_DATA_URL_PREFIX = "data:image/png;base64,";
+import { dataUrlToBlob, isPngDataUrl } from "./capture-data.js";
+
 const FILENAME_PREFIX = "captio-";
 const FILENAME_EXTENSION = ".png";
 const CONFLICT_ACTION_UNIQUIFY = "uniquify";
@@ -57,10 +58,6 @@ export function buildScreenshotFilename(date = new Date()) {
   return `${FILENAME_PREFIX}${timeSuffix}${FILENAME_EXTENSION}`;
 }
 
-function isPngDataUrl(dataUrl) {
-  return typeof dataUrl === "string" && dataUrl.startsWith(PNG_DATA_URL_PREFIX);
-}
-
 function wait(durationMs) {
   return new Promise((resolve) => setTimeout(resolve, durationMs));
 }
@@ -83,8 +80,7 @@ function getDownloadsApi() {
 // navigateur à l'autre qu'un envoi direct d'une data URL.
 async function toBlobUrl(dataUrl) {
   try {
-    const response = await fetch(dataUrl);
-    const blob = await response.blob();
+    const blob = await dataUrlToBlob(dataUrl);
     return URL.createObjectURL(blob);
   } catch (error) {
     console.error(

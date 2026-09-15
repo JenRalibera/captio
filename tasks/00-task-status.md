@@ -7,3 +7,4 @@
 | 3 | Déclencher la capture | ✅ Terminé |
 | 4 | Afficher la capture | ✅ Terminé |
 | 5 | Enregistrer la capture | ✅ Terminé |
+| 6 | Copier la capture | ✅ Terminé |
