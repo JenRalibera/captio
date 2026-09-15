@@ -1,24 +1,28 @@
-# captio
-Browser extension for taking screenshots
+# Captio
+
+Extension pour capture d'écran 
 
 # Hello, everyone !
 
-I try to create random browser extensions, so if you want to add something, send me a little message ! ;)
+J'essaie de créer des extensions pour navigateur aléatoiremet, du coup, si tu veux ajouter quelque chose, n'hésite pas à me laisser un petit message ! :)
 
 ## Installer l'extension en développement
+
+### Navigateur Chrome
 
 1. Ouvrir `chrome://extensions` dans Chrome.
 2. Activer le **Mode développeur** (en haut à droite).
 3. Cliquer sur **Charger l'extension non empaquetée**.
 4. Sélectionner le dossier du projet (contenant `manifest.json`).
 
-L'icône **Captio** apparaît alors dans la barre d'outils ; un clic dessus ouvre l'interface de l'extension.
-
 ### Navigateur Firefox
 
 L'extension se charge également dans Firefox : ouvrir
 `about:debugging#/runtime/this-firefox`, cliquer sur **Charger un module
 temporaire…** et sélectionner le `manifest.json` du projet.
+
+
+L'icône **Captio** apparaît alors dans la barre d'outils ; un clic dessus ouvre l'interface de l'extension.
 
 ## Fonctionnalité
 
