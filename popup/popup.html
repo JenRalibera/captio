@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Captio</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="panel">
+      <header class="panel__header">
+        <img class="panel__logo" src="../public/Captio.jpeg" alt="" width="48" height="48">
+        <div>
+          <h1 class="panel__title">Captio</h1>
+          <p class="panel__tagline">Capture d'écran</p>
+        </div>
+      </header>
+
+      <section class="panel__status" id="status-section" aria-live="polite">
+        <h2 class="visually-hidden">État de l'extension</h2>
+        <p class="panel__badge" id="status-badge">…</p>
+        <p id="status-detail">…</p>
+      </section>
+
+      <section class="panel__actions" id="activation-panel" hidden>
+        <h2 class="visually-hidden">Activation de l'extension</h2>
+        <button type="button" id="activate-button" class="panel__button panel__button--primary">
+          Activer l'extension
+        </button>
+      </section>
+
+      <section class="panel__actions" id="capture-panel" hidden>
+        <h2 class="panel__capture-heading" id="capture-heading" tabindex="-1">
+          Fonctionnalité de capture
+        </h2>
+        <button
+          type="button"
+          id="capture-button"
+          class="panel__button"
+          disabled
+          aria-describedby="capture-note"
+        >
+          Capture d'écran
+        </button>
+        <p id="capture-note">
+          Le bouton capture la partie visible de l'onglet actif. Une fois
+          réalisée, la capture est affichée ci-dessous pour vérification ;
+          vous pouvez ensuite la copier dans le presse-papiers ou
+          l'enregistrer sur votre ordinateur.
+        </p>
+        <p id="capture-feedback" class="panel__capture-feedback" aria-live="polite"></p>
+
+        <div class="panel__screenshot" id="screenshot-display" aria-live="polite">
+          <h3 class="panel__screenshot-heading">Aperçu de la capture</h3>
+          <p class="panel__screenshot-empty" id="screenshot-empty">
+            Aucune capture à afficher pour le moment. Réalisez une capture
+            d'écran pour la visualiser ici.
+          </p>
+          <div
+            class="panel__screenshot-frame"
+            id="screenshot-image-wrapper"
+            hidden
+          >
+            <img
+              class="panel__screenshot-image"
+              id="screenshot-image"
+              alt="Aperçu de la capture d'écran réalisée"
+            >
+          </div>
+
+          <div class="panel__screenshot-actions" id="screenshot-actions" hidden>
+            <div class="panel__screenshot-action-row">
+              <button
+                type="button"
+                id="copy-button"
+                class="panel__button"
+              >
+                Copier
+              </button>
+              <button
+                type="button"
+                id="save-button"
+                class="panel__button panel__button--primary"
+              >
+                Enregistrer
+              </button>
+            </div>
+            <p
+              class="panel__copy-feedback"
+              id="copy-feedback"
+              aria-live="polite"
+            ></p>
+            <p
+              class="panel__save-feedback"
+              id="save-feedback"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <p class="panel__screenshot-error" id="screenshot-error" hidden>
+            La capture a été réalisée, mais l'extension n'a pas réussi à
+            l'afficher. Réessayez une capture.
+          </p>
+        </div>
+      </section>
+
+      <footer class="panel__footer">
+        <span>Version <span id="extension-version">…</span></span>
+      </footer>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
