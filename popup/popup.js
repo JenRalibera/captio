@@ -1,12 +1,13 @@
 // Point d'entrée de la popup : coordonne l'état persisté (extension-state),
 // le rendu de l'interface (status-panel), le déclenchement de la capture de
 // l'onglet actif (capture), l'affichage de la capture réalisée
-// (screenshot-display) et son enregistrement sur l'ordinateur
-// (save-screenshot).
+// (screenshot-display), sa copie dans le presse-papiers (copy-screenshot) et
+// son enregistrement sur l'ordinateur (save-screenshot).
 //
 // Périmètre : la capture est réalisée puis affichée dans l'extension, puis
-// peut être enregistrée localement sur l'ordinateur de l'utilisateur. La
-// capture n'est jamais transmise hors de l'appareil.
+// peut être copiée dans le presse-papiers ou enregistrée localement sur
+// l'ordinateur de l'utilisateur. La capture n'est jamais transmise hors de
+// l'appareil.
 
 import {
   loadActiveState,
@@ -29,16 +30,22 @@ import {
   setCapturePending,
 } from "./status-panel.js";
 import {
+  bindCopyButton,
   bindSaveButton,
   focusSaveButton,
+  renderCopyError,
+  renderCopyPending,
+  renderCopySuccess,
   renderSaveError,
   renderSavePending,
   renderSaveSuccess,
   renderScreenshotEmpty,
   renderScreenshotError,
+  setCopyPending,
   setSavePending,
   showScreenshot,
 } from "./screenshot-display.js";
+import { copyScreenshotToClipboard } from "./copy-screenshot.js";
 import { saveScreenshot } from "./save-screenshot.js";
 
 // Données de la capture actuellement affichée : c'est exactement ce contenu
@@ -109,6 +116,28 @@ async function performSave() {
   }
 }
 
+async function performCopy() {
+  // La copie n'est proposée que lorsqu'une capture est affichée : on ne peut
+  // pas copier une capture inexistante.
+  if (displayedScreenshotDataUrl === null) {
+    return;
+  }
+
+  setCopyPending(true);
+  renderCopyPending();
+  try {
+    await copyScreenshotToClipboard(displayedScreenshotDataUrl);
+    renderCopySuccess();
+  } catch (error) {
+    // L'erreur technique détaillée est journalisée par copy-screenshot.js ;
+    // seul le message compréhensible est remonté à l'utilisateur.
+    console.error("[Captio] Échec de la copie de la capture :", error);
+    renderCopyError(error.message);
+  } finally {
+    setCopyPending(false);
+  }
+}
+
 async function initialize() {
   displayExtensionVersion();
 
@@ -128,6 +157,7 @@ async function initialize() {
 
 bindActivateButton(activateExtension);
 bindCaptureButton(performCapture);
+bindCopyButton(performCopy);
 bindSaveButton(performSave);
 
 initialize();

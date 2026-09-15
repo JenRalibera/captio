@@ -45,7 +45,8 @@
         <p id="capture-note">
           Le bouton capture la partie visible de l'onglet actif. Une fois
           réalisée, la capture est affichée ci-dessous pour vérification ;
-          vous pouvez ensuite l'enregistrer sur votre ordinateur.
+          vous pouvez ensuite la copier dans le presse-papiers ou
+          l'enregistrer sur votre ordinateur.
         </p>
         <p id="capture-feedback" class="panel__capture-feedback" aria-live="polite"></p>
 
@@ -67,14 +68,28 @@
             >
           </div>
 
-          <div class="panel__screenshot-actions" id="save-actions" hidden>
-            <button
-              type="button"
-              id="save-button"
-              class="panel__button panel__button--primary"
-            >
-              Enregistrer
-            </button>
+          <div class="panel__screenshot-actions" id="screenshot-actions" hidden>
+            <div class="panel__screenshot-action-row">
+              <button
+                type="button"
+                id="copy-button"
+                class="panel__button"
+              >
+                Copier
+              </button>
+              <button
+                type="button"
+                id="save-button"
+                class="panel__button panel__button--primary"
+              >
+                Enregistrer
+              </button>
+            </div>
+            <p
+              class="panel__copy-feedback"
+              id="copy-feedback"
+              aria-live="polite"
+            ></p>
             <p
               class="panel__save-feedback"
               id="save-feedback"
